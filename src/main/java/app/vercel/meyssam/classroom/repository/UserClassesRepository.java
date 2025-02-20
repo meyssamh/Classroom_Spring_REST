@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserClassesRepository extends JpaRepository<UserClasses, Long> {
     @Query("SELECT c FROM Class c JOIN UserClasses u WHERE u.id = :userId")
-    List<Class> findByUser_Id(Long id);
+    List<Class> findByUserId(Long id);
 
     @Query("SELECT r FROM UserClasses r WHERE r.classEntity.id = :classId")
     UserClasses findByClassId(Long classId);

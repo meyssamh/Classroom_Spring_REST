@@ -1,19 +1,11 @@
 package app.vercel.meyssam.classroom.service;
 
-import app.vercel.meyssam.classroom.entity.HistoryLog;
-import app.vercel.meyssam.classroom.repository.HistoryLogRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HistoryLogService {
-
-    private final HistoryLogRepository historyLogRepository;
-
-    public HistoryLogService(HistoryLogRepository historyLogRepository) {
-        this.historyLogRepository = historyLogRepository;
-    }
-
-    public HistoryLog saveHistoryLog(HistoryLog historyLog) {
-        return historyLogRepository.save(historyLog);
-    }
+public interface HistoryLogService {
+    void saveUserRegistrationInHistoryLog(long userId);
+    void saveClassCreationInHistoryLog(long userId, long classId);
+    void saveClassUpdateInHistoryLog(long userId, long classId);
+    void saveClassDeletionInHistoryLog(long userId, long classId);
 }

@@ -1,83 +1,56 @@
 package app.vercel.meyssam.classroom.controller;
 
-import app.vercel.meyssam.classroom.entity.Class;
-import app.vercel.meyssam.classroom.entity.HistoryLog;
-import app.vercel.meyssam.classroom.entity.User;
-import app.vercel.meyssam.classroom.entity.UserClasses;
-import app.vercel.meyssam.classroom.service.ClassService;
-import app.vercel.meyssam.classroom.service.HistoryLogService;
-import app.vercel.meyssam.classroom.service.UserClassesService;
-import app.vercel.meyssam.classroom.service.UserService;
-import org.springframework.http.HttpStatus;
+import app.vercel.meyssam.classroom.dto.*;
+import app.vercel.meyssam.classroom.service.impl.ClassServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/classes")
 public class ClassRestController {
 
-    private final ClassService classService;
-    private final UserService userService;
-    private final UserClassesService userClassesService;
-    private final HistoryLogService historyLogService;
+    private final ClassServiceImpl classService;
 
-    public ClassRestController(ClassService classService, UserService userService, UserClassesService userClassesService, HistoryLogService historyLogService) {
+    public ClassRestController(
+            ClassServiceImpl classService
+    ) {
         this.classService = classService;
-        this.userService = userService;
-        this.userClassesService = userClassesService;
-        this.historyLogService = historyLogService;
     }
 
     @GetMapping("/{classId}")
-    public ResponseEntity<Class> getClassById(@PathVariable long classId) {
-        Optional<Class> foundClass = classService.findById(classId);
-        return foundClass.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<GetClassResponseDto> getClassById(@PathVariable long classId) {
+        return classService.getClass(classId);
+    }
+
+    @GetMapping("{userId}")
+    public ResponseEntity<List<GetClassResponseDto>> getAllClasses(@PathVariable long userId) {
+        return classService.getAllClasses(userId);
     }
 
     @PostMapping("/users/{userId}")
-    public ResponseEntity<Class> saveClass(@PathVariable long userId,@RequestBody Class classToSave) {
-        if (classToSave.getClassname() == null || classToSave.getClassname().trim().isEmpty()) {
-            throw new IllegalArgumentException("Class name cannot be null or empty");
-        }
-
-        Class savedClass = classService.saveClass(classToSave);
-
-        User user = userService.getUserById(userId);
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
-
-        UserClasses userClasses = new UserClasses();
-        userClasses.setUser(user);
-        userClasses.setClassEntity(savedClass);
-
-        userClassesService.save(userClasses);
-
-        HistoryLog historyLog = new HistoryLog();
-        historyLog.setCreatedAt(Timestamp.from(Instant.now()));
-        historyLog.setActivity("User with id " + userId + " saved class with id " + savedClass.getId());
-        historyLog.setuserId(userId);
-
-        historyLogService.saveHistoryLog(historyLog);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedClass);
+    public ResponseEntity<CreateClassResponseDto> saveClass(
+            @PathVariable long userId,
+            @RequestBody CreateClassRequestDto createClassRequestDto
+    ) {
+        return classService.createClass(userId, createClassRequestDto);
     }
 
-    @PutMapping("/{classId}")
-    public ResponseEntity<Class> updateClass(@PathVariable long classId, @RequestBody Class classToUpdate) {
-        Class updatedClass = classService.updateClass(classId, classToUpdate);
-        return ResponseEntity.ok(updatedClass);
+    @PutMapping("/{classId}/{userId}")
+    public ResponseEntity<UpdateClassResponseDto> updateClass(
+            @PathVariable long classId,
+            @PathVariable long userId,
+            @RequestBody UpdateClassRequestDto updateClassRequestDto
+    ) {
+        return classService.updateClass(userId, updateClassRequestDto);
     }
 
-    @DeleteMapping("/{classId}")
-    public ResponseEntity<Void> deleteClass(@PathVariable long classId) {
-        userClassesService.deleteRecordByClassId(classId);
-        classService.deleteClass(classId);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<DeleteClassResponseDto> deleteClass(
+            @PathVariable long userId,
+            @RequestBody DeleteClassRequestDto deleteClassRequestDto
+    ) {
+        return classService.deleteClass(userId, deleteClassRequestDto);
     }
 }
