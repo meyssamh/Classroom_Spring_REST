@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 public class DeleteClassMapper {
 
     public Class toEntity(DeleteClassRequestDto deleteClassRequestDto) {
-        final Class deleteClass = new Class();
+        final Class toDeleteClass = new Class();
 
-        deleteClass.setId(deleteClassRequestDto.id());
-        return deleteClass;
+        toDeleteClass.setId(deleteClassRequestDto.id());
+        return toDeleteClass;
     }
 
     public DeleteClassResponseDto toDto(Class deleteClass) {
