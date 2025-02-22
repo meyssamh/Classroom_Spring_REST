@@ -1,9 +1,19 @@
 package app.vercel.meyssam.classroom.service.impl;
 
-import app.vercel.meyssam.classroom.dto.*;
+import app.vercel.meyssam.classroom.dto.create.CreateClassRequestDto;
+import app.vercel.meyssam.classroom.dto.create.CreateClassResponseDto;
+import app.vercel.meyssam.classroom.dto.delete.DeleteClassRequestDto;
+import app.vercel.meyssam.classroom.dto.delete.DeleteClassResponseDto;
+import app.vercel.meyssam.classroom.dto.get.GetClassResponseDto;
+import app.vercel.meyssam.classroom.dto.update.UpdateClassRequestDto;
+import app.vercel.meyssam.classroom.dto.update.UpdateClassResponseDto;
 import app.vercel.meyssam.classroom.entity.Class;
 import app.vercel.meyssam.classroom.entity.User;
-import app.vercel.meyssam.classroom.mapper.*;
+import app.vercel.meyssam.classroom.mapper.delete.DeleteClassMapper;
+import app.vercel.meyssam.classroom.mapper.get.GetAllClassesMapper;
+import app.vercel.meyssam.classroom.mapper.get.GetClassMapper;
+import app.vercel.meyssam.classroom.mapper.update.UpdateClassMapper;
+import app.vercel.meyssam.classroom.mapper.create.CreateClassMapper;
 import app.vercel.meyssam.classroom.repository.ClassRepository;
 import app.vercel.meyssam.classroom.service.ClassService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -34,7 +44,12 @@ public class ClassServiceImpl implements ClassService {
             UserClassesServiceImpl userClassesService,
             HistoryLogServiceImpl historyLogService,
             UserServiceImpl userService,
-            CreateClassMapper createClassMapper, UpdateClassMapper updateClassMapper, DeleteClassMapper deleteClassMapper, GetClassMapper getClassMapper, GetAllClassesMapper getAllClassesMapper) {
+            CreateClassMapper createClassMapper,
+            UpdateClassMapper updateClassMapper,
+            DeleteClassMapper deleteClassMapper,
+            GetClassMapper getClassMapper,
+            GetAllClassesMapper getAllClassesMapper
+    ) {
         this.classRepository = classRepository;
         this.userClassesService = userClassesService;
         this.historyLogService = historyLogService;
@@ -47,7 +62,13 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
-    public ResponseEntity<GetClassResponseDto> getClass(Long classId) {
+    public Class getClassById(long classId) {
+        return classRepository.findClassById(classId).orElseThrow(() ->
+                new ResourceNotFoundException("Class not found"));
+    }
+
+    @Override
+    public ResponseEntity<GetClassResponseDto> getClass(long classId) {
         Class foundClass = classRepository.findClassById(classId).orElseThrow(() ->
                 new ResourceNotFoundException("Class not found"));
 
@@ -55,7 +76,7 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
-    public ResponseEntity<List<GetClassResponseDto>> getAllClasses(Long userId) {
+    public ResponseEntity<List<GetClassResponseDto>> getAllClasses(long userId) {
         List<Class> foundClasses = classRepository.findAllClasses(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Classes not found"));
 

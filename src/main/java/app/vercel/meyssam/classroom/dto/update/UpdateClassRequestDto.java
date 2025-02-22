@@ -1,4 +1,4 @@
-package app.vercel.meyssam.classroom.dto;
+package app.vercel.meyssam.classroom.dto.update;
 
 import jakarta.validation.constraints.NotBlank;
 

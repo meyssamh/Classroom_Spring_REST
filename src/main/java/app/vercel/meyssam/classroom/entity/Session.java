@@ -29,7 +29,14 @@ public class Session {
     public Session() {
     }
 
-    public Session(long id, Timestamp createdAT, Timestamp updatedAT, Timestamp date, String situation, Set<ClassSessions> courseSessions) {
+    public Session(
+            long id,
+            Timestamp createdAT,
+            Timestamp updatedAT,
+            Timestamp date,
+            String situation,
+            Set<ClassSessions> courseSessions
+    ) {
         this.id = id;
         this.createdAT = createdAT;
         this.updatedAT = updatedAT;

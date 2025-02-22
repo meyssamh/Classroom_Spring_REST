@@ -1,7 +1,7 @@
-package app.vercel.meyssam.classroom.mapper;
+package app.vercel.meyssam.classroom.mapper.update;
 
-import app.vercel.meyssam.classroom.dto.UpdateClassRequestDto;
-import app.vercel.meyssam.classroom.dto.UpdateClassResponseDto;
+import app.vercel.meyssam.classroom.dto.update.UpdateClassRequestDto;
+import app.vercel.meyssam.classroom.dto.update.UpdateClassResponseDto;
 import app.vercel.meyssam.classroom.entity.Class;
 import org.springframework.stereotype.Component;
 

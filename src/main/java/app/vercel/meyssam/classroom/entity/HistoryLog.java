@@ -23,7 +23,12 @@ public class HistoryLog {
     public HistoryLog() {
     }
 
-    public HistoryLog(long id, Timestamp createdAt, long userId, String activity) {
+    public HistoryLog(
+            long id,
+            Timestamp createdAt,
+            long userId,
+            String activity
+    ) {
         this.id = id;
         this.createdAt = createdAt;
         this.userId = userId;

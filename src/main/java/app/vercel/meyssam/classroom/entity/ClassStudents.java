@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "class_students")
 public class ClassStudents {
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne

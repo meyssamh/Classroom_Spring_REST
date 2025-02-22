@@ -1,7 +1,7 @@
-package app.vercel.meyssam.classroom.mapper;
+package app.vercel.meyssam.classroom.mapper.delete;
 
-import app.vercel.meyssam.classroom.dto.DeleteClassRequestDto;
-import app.vercel.meyssam.classroom.dto.DeleteClassResponseDto;
+import app.vercel.meyssam.classroom.dto.delete.DeleteClassRequestDto;
+import app.vercel.meyssam.classroom.dto.delete.DeleteClassResponseDto;
 import app.vercel.meyssam.classroom.entity.Class;
 import org.springframework.stereotype.Component;
 

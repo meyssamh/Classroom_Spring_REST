@@ -30,7 +30,14 @@ public class Student {
     public Student() {
     }
 
-    public Student(long id, String firstName, String lastName, Timestamp createdAT, Timestamp updatedAT, Set<ClassStudents> courseStudents) {
+    public Student(
+            long id,
+            String firstName,
+            String lastName,
+            Timestamp createdAT,
+            Timestamp updatedAT,
+            Set<ClassStudents> courseStudents
+    ) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

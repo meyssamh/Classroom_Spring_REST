@@ -17,9 +17,14 @@ public class UserClasses {
     @JoinColumn(name = "class_id", nullable = true)
     Class classEntity;
 
-    public UserClasses() {}
+    public UserClasses() {
+    }
 
-    public UserClasses(long id, User user, Class classEntity) {
+    public UserClasses(
+            long id,
+            User user,
+            Class classEntity
+    ) {
         this.id = id;
         this.user = user;
         this.classEntity = classEntity;

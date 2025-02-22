@@ -1,7 +1,7 @@
-package app.vercel.meyssam.classroom.mapper;
+package app.vercel.meyssam.classroom.mapper.create;
 
-import app.vercel.meyssam.classroom.dto.CreateClassRequestDto;
-import app.vercel.meyssam.classroom.dto.CreateClassResponseDto;
+import app.vercel.meyssam.classroom.dto.create.CreateClassRequestDto;
+import app.vercel.meyssam.classroom.dto.create.CreateClassResponseDto;
 import app.vercel.meyssam.classroom.entity.Class;
 import org.springframework.stereotype.Component;
 

@@ -46,7 +46,10 @@ public class StudentServiceImpl implements StudentService {
             HistoryLogServiceImpl historyLogService,
             CreateStudentMapper createStudentMapper,
             UpdateStudentMapper updateStudentMapper,
-            DeleteStudentMapper deleteStudentMapper, GetStudentMapper getStudentMapper, GetAllStudentsMapper getAllStudentsMapper) {
+            DeleteStudentMapper deleteStudentMapper,
+            GetStudentMapper getStudentMapper,
+            GetAllStudentsMapper getAllStudentsMapper
+    ) {
         this.studentRepository = studentRepository;
         this.classService = classService;
         this.classStudentsService = classStudentsService;
@@ -80,6 +83,7 @@ public class StudentServiceImpl implements StudentService {
             CreateStudentRequestDto createStudentRequestDto
     ) {
         Class chosenClass = classService.getClassById(classId);
+
         if (chosenClass == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -130,7 +134,7 @@ public class StudentServiceImpl implements StudentService {
 
         Student updatedStudent = studentRepository.save(studentToUpdate);
 
-        historyLogService.saveStudentUpdateInHistoryLog(studentId, classId, userId);
+        historyLogService.saveStudentUpdateInHistoryLog(userId, classId, studentId);
 
         return ResponseEntity.status(HttpStatus.OK).body(updateStudentMapper.toDto(updatedStudent));
     }
