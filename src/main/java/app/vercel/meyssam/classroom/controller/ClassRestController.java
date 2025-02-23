@@ -1,6 +1,5 @@
 package app.vercel.meyssam.classroom.controller;
 
-import app.vercel.meyssam.classroom.dto.*;
 import app.vercel.meyssam.classroom.dto.create.CreateClassRequestDto;
 import app.vercel.meyssam.classroom.dto.create.CreateClassResponseDto;
 import app.vercel.meyssam.classroom.dto.delete.DeleteClassRequestDto;
@@ -31,7 +30,7 @@ public class ClassRestController {
         return classService.getClass(classId);
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<List<GetClassResponseDto>> getAllClasses(@PathVariable long userId) {
         return classService.getAllClasses(userId);
     }
@@ -44,9 +43,8 @@ public class ClassRestController {
         return classService.createClass(userId, createClassRequestDto);
     }
 
-    @PutMapping("/{classId}/{userId}")
+    @PutMapping("/{userId}")
     public ResponseEntity<UpdateClassResponseDto> updateClass(
-            @PathVariable long classId,
             @PathVariable long userId,
             @RequestBody UpdateClassRequestDto updateClassRequestDto
     ) {

@@ -5,5 +5,5 @@ import app.vercel.meyssam.classroom.entity.Student;
 
 public interface ClassStudentsService {
     void createClassStudent(Class chosenClass, Student savedStudent);
-    Long deleteClassStudent(Student studentToDelete);
+    long deleteClassStudent(Student studentToDelete);
 }

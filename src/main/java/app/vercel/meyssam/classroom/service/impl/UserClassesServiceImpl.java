@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserClassesServiceImpl implements UserClassesService {
+
     private final UserClassesRepository userClassesRepository;
 
     public UserClassesServiceImpl(UserClassesRepository userClassesRepository) {

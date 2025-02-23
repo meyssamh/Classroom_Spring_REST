@@ -29,6 +29,7 @@ import java.util.List;
 public class ClassServiceImpl implements ClassService {
 
     private final ClassRepository classRepository;
+
     private final UserClassesServiceImpl userClassesService;
     private final HistoryLogServiceImpl historyLogService;
     private final UserServiceImpl userService;

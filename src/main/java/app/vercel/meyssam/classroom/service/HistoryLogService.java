@@ -13,4 +13,8 @@ public interface HistoryLogService {
     void saveStudentCreationInHistoryLog(long userId, long classId, long studentId);
     void saveStudentUpdateInHistoryLog(long userId, long classId, long studentId);
     void saveStudentDeletionInHistoryLog(long userId, long classId, long studentId);
+
+    void saveSessionCreationInHistoryLog(long userId, long classId, long sessionId);
+    void saveSessionUpdateInHistoryLog(long userId, long classId, long sessionId);
+    void saveSessionDeletionInHistoryLog(long userId, long classId, long sessionId);
 }

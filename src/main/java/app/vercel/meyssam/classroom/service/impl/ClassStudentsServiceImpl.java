@@ -26,7 +26,7 @@ public class ClassStudentsServiceImpl implements ClassStudentsService {
     }
 
     @Override
-    public Long deleteClassStudent(Student studentToDelete) {
+    public long deleteClassStudent(Student studentToDelete) {
         ClassStudents classStudent = classStudentsRepository.findByStudentId(studentToDelete.getId());
 
         if (classStudent != null) {

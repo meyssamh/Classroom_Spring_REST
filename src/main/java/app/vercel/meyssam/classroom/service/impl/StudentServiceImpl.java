@@ -29,6 +29,7 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
+
     private final ClassServiceImpl classService;
     private final ClassStudentsServiceImpl classStudentsService;
     private final HistoryLogServiceImpl historyLogService;
@@ -123,7 +124,8 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.findById(studentId).orElseThrow(() ->
                 new ResourceNotFoundException(
                         "Student with id " + studentId + " not found"
-                ));
+                )
+        );
 
         Class classEntity = classService.getClassById(classId);
         if (classEntity == null) {

@@ -99,4 +99,44 @@ public class HistoryLogServiceImpl implements HistoryLogService {
 
         historyLogRepository.save(historyLog);
     }
+
+    @Override
+    public void saveSessionCreationInHistoryLog(long userId, long classId, long sessionId) {
+        HistoryLog historyLog = new HistoryLog();
+
+        historyLog.setCreatedAt(Timestamp.from(Instant.now()));
+        historyLog.setActivity("User with id " + userId +
+                " created session with id " + sessionId +
+                " in class with id " + classId + "."
+        );
+        historyLog.setuserId(userId);
+
+        historyLogRepository.save(historyLog);
+    }
+
+    @Override
+    public void saveSessionUpdateInHistoryLog(long userId, long classId, long sessionId) {
+        HistoryLog historyLog = new HistoryLog();
+
+        historyLog.setCreatedAt(Timestamp.from(Instant.now()));
+        historyLog.setActivity("User with id " + userId +
+                " updated session with id " + sessionId +
+                " in class with id " + classId + ".");
+        historyLog.setuserId(userId);
+
+        historyLogRepository.save(historyLog);
+    }
+
+    @Override
+    public void saveSessionDeletionInHistoryLog(long userId, long classId, long sessionId) {
+        HistoryLog historyLog = new HistoryLog();
+
+        historyLog.setCreatedAt(Timestamp.from(Instant.now()));
+        historyLog.setActivity("User with id " + userId +
+                " deleted session with id " + sessionId +
+                " in class with id " + classId + ".");
+        historyLog.setuserId(userId);
+
+        historyLogRepository.save(historyLog);
+    }
 }
