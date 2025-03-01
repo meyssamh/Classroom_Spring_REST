@@ -9,6 +9,11 @@ import java.util.List;
 
 @Repository
 public interface SessionRepository extends JpaRepository<Session, Long> {
-    @Query("SELECT s FROM ClassSessions s WHERE s.classEntity.id = :classId")
+    @Query("""
+            SELECT s FROM Session s
+            JOIN ClassSessions cs
+            ON s.id = cs.session.id
+            WHERE cs.classEntity.id = :classId
+            """)
     List<Session> findByClassId(long classId);
 }

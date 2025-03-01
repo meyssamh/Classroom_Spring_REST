@@ -12,7 +12,14 @@ import java.util.Optional;
 @Repository
 public interface ClassRepository extends JpaRepository<Class, Long> {
     Optional<Class> findClassById(Long classId);
-    @Query("SELECT c FROM UserClasses c WHERE c.user.id = :userId ")
+
+    @Query("""
+            SELECT c FROM Class c
+            JOIN UserClasses uc
+            ON c.id = uc.classEntity.id
+            WHERE uc.user.id = :userId
+            """)
     Optional<List<Class>> findAllClasses(Long userId);
+
     Class save(@NonNull Class classToSave);
 }

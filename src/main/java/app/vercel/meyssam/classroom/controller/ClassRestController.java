@@ -30,7 +30,7 @@ public class ClassRestController {
         return classService.getClass(classId);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<GetClassResponseDto>> getAllClasses(@PathVariable long userId) {
         return classService.getAllClasses(userId);
     }
