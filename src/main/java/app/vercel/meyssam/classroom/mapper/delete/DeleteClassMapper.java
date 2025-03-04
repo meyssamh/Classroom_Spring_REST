@@ -11,7 +11,7 @@ public class DeleteClassMapper {
     public Class toEntity(DeleteClassRequestDto deleteClassRequestDto) {
         final Class toDeleteClass = new Class();
 
-        toDeleteClass.setId(deleteClassRequestDto.id());
+        toDeleteClass.setId(deleteClassRequestDto.classId());
         return toDeleteClass;
     }
 

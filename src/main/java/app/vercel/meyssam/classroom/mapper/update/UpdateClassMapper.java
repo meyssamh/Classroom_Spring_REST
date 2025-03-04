@@ -11,7 +11,7 @@ public class UpdateClassMapper {
     public Class toEntity(UpdateClassRequestDto updateClassRequestDto) {
         final Class updateClass = new Class();
 
-        updateClass.setId(updateClassRequestDto.id());
+        updateClass.setId(updateClassRequestDto.classId());
         updateClass.setClassname(updateClassRequestDto.classname());
         return updateClass;
     }

@@ -2,7 +2,6 @@ package app.vercel.meyssam.classroom.service.impl;
 
 import app.vercel.meyssam.classroom.dto.create.CreateStudentRequestDto;
 import app.vercel.meyssam.classroom.dto.create.CreateStudentResponseDto;
-import app.vercel.meyssam.classroom.dto.delete.DeleteStudentRequestDto;
 import app.vercel.meyssam.classroom.dto.delete.DeleteStudentResponseDto;
 import app.vercel.meyssam.classroom.dto.get.GetStudentResponseDto;
 import app.vercel.meyssam.classroom.dto.update.UpdateStudentRequestDto;
@@ -114,29 +113,28 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResponseEntity<UpdateStudentResponseDto> updateStudent(
-            long studentId,
             long classId,
             long userId,
             UpdateStudentRequestDto updateStudentRequestDto
     ) {
         Student studentToUpdate = updateStudentMapper.toEntity(updateStudentRequestDto);
 
-        studentRepository.findById(studentId).orElseThrow(() ->
-                new ResourceNotFoundException(
-                        "Student with id " + studentId + " not found"
-                )
-        );
+        Student foundStudent = studentRepository.findStudentById(studentToUpdate.getId());
+        if (foundStudent == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         Class classEntity = classService.getClassById(classId);
         if (classEntity == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+        studentToUpdate.setCreatedAT(foundStudent.getCreatedAT());
         studentToUpdate.setUpdatedAT(Timestamp.from(Instant.now()));
 
         Student updatedStudent = studentRepository.save(studentToUpdate);
 
-        historyLogService.saveStudentUpdateInHistoryLog(userId, classId, studentId);
+        historyLogService.saveStudentUpdateInHistoryLog(userId, classId, foundStudent.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(updateStudentMapper.toDto(updatedStudent));
     }
@@ -144,15 +142,16 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public ResponseEntity<DeleteStudentResponseDto> deleteStudent(
             long userId,
-            DeleteStudentRequestDto deleteStudentRequestDto
+            long studentId
     ) {
-        Student studentToDelete = deleteStudentMapper.toEntity(deleteStudentRequestDto);
-
+        Student studentToDelete = studentRepository.findStudentById(studentId);
         if (studentToDelete == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         long classId = classStudentsService.deleteClassStudent(studentToDelete);
+
+        studentRepository.delete(studentToDelete);
 
         historyLogService.saveStudentDeletionInHistoryLog(userId, classId, studentToDelete.getId());
 

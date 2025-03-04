@@ -2,7 +2,6 @@ package app.vercel.meyssam.classroom.service.impl;
 
 import app.vercel.meyssam.classroom.dto.create.CreateSessionRequestDto;
 import app.vercel.meyssam.classroom.dto.create.CreateSessionResponseDto;
-import app.vercel.meyssam.classroom.dto.delete.DeleteSessionRequestDto;
 import app.vercel.meyssam.classroom.dto.delete.DeleteSessionResponseDto;
 import app.vercel.meyssam.classroom.dto.get.GetSessionResponseDto;
 import app.vercel.meyssam.classroom.dto.update.UpdateSessionRequestDto;
@@ -127,6 +126,9 @@ public class SessionServiceImpl implements SessionService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+        Session foundSession = sessionRepository.findSessionById(sessionToUpdate.getId());
+
+        sessionToUpdate.setCreatedAT(foundSession.getCreatedAT());
         sessionToUpdate.setUpdatedAT(Timestamp.from(Instant.now()));
 
         Session updatedSession = sessionRepository.save(sessionToUpdate);
@@ -139,15 +141,16 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public ResponseEntity<DeleteSessionResponseDto> deleteSession(
             long userId,
-            DeleteSessionRequestDto deleteSessionRequestDto
+            long sessionId
     ) {
-        Session sessionToDelete = deleteSessionMapper.toEntity(deleteSessionRequestDto);
-
+        Session sessionToDelete = sessionRepository.findSessionById(sessionId);
         if (sessionToDelete == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         long classId = classSessionsService.deleteClassSession(sessionToDelete);
+
+        sessionRepository.delete(sessionToDelete);
 
         historyLogService.saveSessionDeletionInHistoryLog(userId, classId, sessionToDelete.getId());
 

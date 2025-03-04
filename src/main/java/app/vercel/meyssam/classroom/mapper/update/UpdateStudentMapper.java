@@ -11,6 +11,7 @@ public class UpdateStudentMapper {
     public Student toEntity(UpdateStudentRequestDto updateStudentRequestDto) {
         Student toUpdateStudent = new Student();
 
+        toUpdateStudent.setId(updateStudentRequestDto.studentId());
         toUpdateStudent.setFirstName(updateStudentRequestDto.firstname());
         toUpdateStudent.setLastName(updateStudentRequestDto.lastname());
 

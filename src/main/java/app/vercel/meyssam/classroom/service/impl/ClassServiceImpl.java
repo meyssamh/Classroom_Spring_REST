@@ -64,14 +64,20 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     public Class getClassById(long classId) {
-        return classRepository.findClassById(classId).orElseThrow(() ->
-                new ResourceNotFoundException("Class not found"));
+        Class foundClass = classRepository.findClassById(classId);
+        if (foundClass == null) {
+            throw new ResourceNotFoundException("Class not found");
+        }
+
+        return foundClass;
     }
 
     @Override
     public ResponseEntity<GetClassResponseDto> getClass(long classId) {
-        Class foundClass = classRepository.findClassById(classId).orElseThrow(() ->
-                new ResourceNotFoundException("Class not found"));
+        Class foundClass = classRepository.findClassById(classId);
+        if (foundClass == null) {
+            throw new ResourceNotFoundException("Class not found");
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(getClassMapper.toDto(foundClass));
     }
@@ -91,8 +97,10 @@ public class ClassServiceImpl implements ClassService {
             long userId,
             CreateClassRequestDto createClassRequestDto
     ) {
-        if (createClassRequestDto.classname() == null ||
-                createClassRequestDto.classname().trim().isEmpty()) {
+        if (
+                createClassRequestDto.classname() == null ||
+                        createClassRequestDto.classname().trim().isEmpty()
+        ) {
             throw new IllegalArgumentException("Class name cannot be null or empty");
         }
 
@@ -122,16 +130,17 @@ public class ClassServiceImpl implements ClassService {
     ) {
         Class classToUpdate = updateClassMapper.toEntity(updateClassRequestDto);
 
-        classRepository.findClassById(classToUpdate.getId()).orElseThrow(() ->
-                new ResourceNotFoundException(
-                        "Class with ID " + classToUpdate.getId() + " not found!"
-                ));
+        Class foundClass = classRepository.findClassById(classToUpdate.getId());
+        if (foundClass == null) {
+            throw new ResourceNotFoundException("Class with not found!");
+        }
 
         User user = userService.getUserById(userId);
         if (user == null) {
             throw new RuntimeException("User not found");
         }
 
+        classToUpdate.setCreatedAt(foundClass.getCreatedAt());
         classToUpdate.setUpdatedAt(Timestamp.from(Instant.now()));
 
         Class updatedClass = classRepository.save(classToUpdate);
@@ -144,22 +153,19 @@ public class ClassServiceImpl implements ClassService {
     @Override
     public ResponseEntity<DeleteClassResponseDto> deleteClass(
             long userId,
-            DeleteClassRequestDto deleteClassRequestDto
+            long classId
     ) {
-        if (!classRepository.existsById(deleteClassRequestDto.id())) {
-            throw new ResourceNotFoundException(
-                    "Class with ID " + deleteClassRequestDto.id() + " not found!"
-            );
+        Class classToDelete = classRepository.findClassById(classId);
+        if (classToDelete == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Class toDeleteClass = deleteClassMapper.toEntity(deleteClassRequestDto);
+        userClassesService.deleteUserClasses(classToDelete);
 
-        userClassesService.deleteUserClasses(toDeleteClass);
+        classRepository.deleteById(classId);
 
-        classRepository.deleteById(toDeleteClass.getId());
+        historyLogService.saveClassDeletionInHistoryLog(userId, classId);
 
-        historyLogService.saveClassDeletionInHistoryLog(userId, toDeleteClass.getId());
-
-        return ResponseEntity.status(HttpStatus.OK).body(deleteClassMapper.toDto(toDeleteClass));
+        return ResponseEntity.status(HttpStatus.OK).body(deleteClassMapper.toDto(classToDelete));
     }
 }

@@ -9,11 +9,13 @@ import java.util.List;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
+    Student findStudentById(Long studentId);
+
     @Query("""
             SELECT s FROM Student s
             JOIN ClassStudents cs
             ON s.id = cs.student.id
             WHERE cs.classEntity.id = :classId
             """)
-    List<Student> findByClassId(long classId);
+    List<Student> findByClassId(Long classId);
 }

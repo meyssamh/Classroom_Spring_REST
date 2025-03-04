@@ -2,7 +2,6 @@ package app.vercel.meyssam.classroom.controller;
 
 import app.vercel.meyssam.classroom.dto.create.CreateClassRequestDto;
 import app.vercel.meyssam.classroom.dto.create.CreateClassResponseDto;
-import app.vercel.meyssam.classroom.dto.delete.DeleteClassRequestDto;
 import app.vercel.meyssam.classroom.dto.delete.DeleteClassResponseDto;
 import app.vercel.meyssam.classroom.dto.get.GetClassResponseDto;
 import app.vercel.meyssam.classroom.dto.update.UpdateClassRequestDto;
@@ -26,12 +25,16 @@ public class ClassRestController {
     }
 
     @GetMapping("/{classId}")
-    public ResponseEntity<GetClassResponseDto> getClassById(@PathVariable long classId) {
+    public ResponseEntity<GetClassResponseDto> getClassById(
+            @PathVariable long classId
+    ) {
         return classService.getClass(classId);
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<GetClassResponseDto>> getAllClasses(@PathVariable long userId) {
+    public ResponseEntity<List<GetClassResponseDto>> getAllClasses(
+            @PathVariable long userId
+    ) {
         return classService.getAllClasses(userId);
     }
 
@@ -51,11 +54,11 @@ public class ClassRestController {
         return classService.updateClass(userId, updateClassRequestDto);
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{userId}/{classId}")
     public ResponseEntity<DeleteClassResponseDto> deleteClass(
             @PathVariable long userId,
-            @RequestBody DeleteClassRequestDto deleteClassRequestDto
+            @PathVariable long classId
     ) {
-        return classService.deleteClass(userId, deleteClassRequestDto);
+        return classService.deleteClass(userId, classId);
     }
 }

@@ -20,13 +20,12 @@ public interface StudentService {
             CreateStudentRequestDto createStudentRequestDto
     );
     ResponseEntity<UpdateStudentResponseDto> updateStudent(
-            long studentId,
             long classId,
             long userId,
             UpdateStudentRequestDto updateStudentRequestDto
     );
     ResponseEntity<DeleteStudentResponseDto> deleteStudent(
             long userId,
-            DeleteStudentRequestDto deleteStudentRequestDto
+            long studentId
     );
 }

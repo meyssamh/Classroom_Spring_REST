@@ -11,7 +11,7 @@ public class UpdateSessionMapper {
     public Session toEntity(UpdateSessionRequestDto updateSessionRequestDto) {
         Session session = new Session();
 
-        session.setId(updateSessionRequestDto.id());
+        session.setId(updateSessionRequestDto.sessionId());
         session.setDate(updateSessionRequestDto.date());
         session.setSituation(updateSessionRequestDto.situation());
 

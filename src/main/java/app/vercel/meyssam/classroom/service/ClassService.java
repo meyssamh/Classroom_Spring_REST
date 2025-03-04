@@ -26,6 +26,6 @@ public interface ClassService {
     );
     ResponseEntity<DeleteClassResponseDto> deleteClass(
             long userId,
-            DeleteClassRequestDto deleteClassRequestDto
+            long classId
     );
 }

@@ -2,7 +2,6 @@ package app.vercel.meyssam.classroom.controller;
 
 import app.vercel.meyssam.classroom.dto.create.CreateSessionRequestDto;
 import app.vercel.meyssam.classroom.dto.create.CreateSessionResponseDto;
-import app.vercel.meyssam.classroom.dto.delete.DeleteSessionRequestDto;
 import app.vercel.meyssam.classroom.dto.delete.DeleteSessionResponseDto;
 import app.vercel.meyssam.classroom.dto.get.GetSessionResponseDto;
 import app.vercel.meyssam.classroom.dto.update.UpdateSessionRequestDto;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/session")
+@RequestMapping("/api/session")
 public class SessionRestController {
 
     private final SessionServiceImpl sessionService;
@@ -32,7 +31,7 @@ public class SessionRestController {
         return sessionService.getSession(sessionId);
     }
 
-    @GetMapping("/{classId}")
+    @GetMapping("/class/{classId}")
     public ResponseEntity<List<GetSessionResponseDto>> getAllSessions(
             @PathVariable long classId
     ) {
@@ -57,11 +56,11 @@ public class SessionRestController {
         return sessionService.updateSession(userId, classId, updateSessionRequestDto);
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{userId}/{sessionId}")
     public ResponseEntity<DeleteSessionResponseDto> deleteSession(
             @PathVariable long userId,
-            @RequestBody DeleteSessionRequestDto deleteSessionRequestDto
+            @PathVariable long sessionId
     ) {
-        return sessionService.deleteSession(userId, deleteSessionRequestDto);
+        return sessionService.deleteSession(userId, sessionId);
     }
 }

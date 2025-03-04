@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface ClassRepository extends JpaRepository<Class, Long> {
-    Optional<Class> findClassById(Long classId);
+    Class findClassById(Long classId);
 
     @Query("""
             SELECT c FROM Class c

@@ -9,11 +9,13 @@ import java.util.List;
 
 @Repository
 public interface SessionRepository extends JpaRepository<Session, Long> {
+    Session findSessionById(Long sessionId);
+
     @Query("""
             SELECT s FROM Session s
             JOIN ClassSessions cs
             ON s.id = cs.session.id
             WHERE cs.classEntity.id = :classId
             """)
-    List<Session> findByClassId(long classId);
+    List<Session> findByClassId(Long classId);
 }

@@ -26,6 +26,6 @@ public interface SessionService {
     );
     ResponseEntity<DeleteSessionResponseDto> deleteSession(
             long userId,
-            DeleteSessionRequestDto deleteSessionRequestDto
+            long sessionId
     );
 }

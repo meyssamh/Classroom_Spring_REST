@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClassSessionsRepository extends JpaRepository<ClassSessions, Long> {
     @Query("SELECT s FROM ClassSessions s WHERE s.session.id = :sessionId")
-    ClassSessions findBySessionId(long sessionId);
+    ClassSessions findBySessionId(Long sessionId);
 }
