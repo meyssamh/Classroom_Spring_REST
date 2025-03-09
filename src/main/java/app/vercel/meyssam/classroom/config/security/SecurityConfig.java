@@ -27,25 +27,6 @@ public class SecurityConfig {
         return new JdbcUserDetailsManager(dataSource);
     }
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//
-//        http.authorizeHttpRequests(configurer ->
-//                configurer
-//                        .requestMatchers(HttpMethod.GET, "/api/todos").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.GET, "/api/todos/**").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.POST, "/api/todos").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.PUT, "/api/todos/**").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.DELETE, "/api/todos/**").hasRole("ADMIN")
-//        );
-//
-//        http.httpBasic(Customizer.withDefaults());
-//
-//        http.csrf(csrf -> csrf.disable());
-//
-//        return http.build();
-//    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         return http
@@ -69,7 +50,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(
             final AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
-
         return authenticationConfiguration.getAuthenticationManager();
     }
 

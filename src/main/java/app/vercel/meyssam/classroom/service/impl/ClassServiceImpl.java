@@ -2,7 +2,6 @@ package app.vercel.meyssam.classroom.service.impl;
 
 import app.vercel.meyssam.classroom.dto.create.CreateClassRequestDto;
 import app.vercel.meyssam.classroom.dto.create.CreateClassResponseDto;
-import app.vercel.meyssam.classroom.dto.delete.DeleteClassRequestDto;
 import app.vercel.meyssam.classroom.dto.delete.DeleteClassResponseDto;
 import app.vercel.meyssam.classroom.dto.get.GetClassResponseDto;
 import app.vercel.meyssam.classroom.dto.update.UpdateClassRequestDto;
@@ -101,7 +100,7 @@ public class ClassServiceImpl implements ClassService {
                 createClassRequestDto.classname() == null ||
                         createClassRequestDto.classname().trim().isEmpty()
         ) {
-            throw new IllegalArgumentException("Class name cannot be null or empty");
+            throw new IllegalArgumentException("Classname cannot be null or empty");
         }
 
         User user = userService.getUserById(userId);

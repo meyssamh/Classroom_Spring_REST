@@ -19,9 +19,10 @@ public class JwtService {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public String generateToken(final String username) {
+    public String generateToken(final String username, final String userId) {
         final var claimsSet = JwtClaimsSet.builder()
                 .subject(username)
+                .subject(userId)
                 .issuer(issuer)
                 .expiresAt(Instant.now().plus(ttl))
                 .build();
