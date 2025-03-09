@@ -1,5 +1,7 @@
 package app.vercel.meyssam.classroom.controller;
 
+import app.vercel.meyssam.classroom.dto.auth.AuthUserRequestDto;
+import app.vercel.meyssam.classroom.dto.auth.AuthUserResponseDto;
 import app.vercel.meyssam.classroom.dto.create.CreateUserRequestDto;
 import app.vercel.meyssam.classroom.dto.create.CreateUserResponseDto;
 import app.vercel.meyssam.classroom.service.impl.UserServiceImpl;
@@ -26,5 +28,12 @@ public class UserRestController {
             @RequestBody CreateUserRequestDto user
     ) {
         return userService.saveUser(user);
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<AuthUserResponseDto> signin(
+            @RequestBody AuthUserRequestDto user
+    ) {
+        return userService.authenticate(user);
     }
 }

@@ -1,10 +1,14 @@
 package app.vercel.meyssam.classroom.service.impl;
 
+import app.vercel.meyssam.classroom.dto.auth.AuthUserRequestDto;
+import app.vercel.meyssam.classroom.dto.auth.AuthUserResponseDto;
 import app.vercel.meyssam.classroom.dto.create.CreateUserRequestDto;
 import app.vercel.meyssam.classroom.dto.create.CreateUserResponseDto;
 import app.vercel.meyssam.classroom.entity.User;
+import app.vercel.meyssam.classroom.mapper.auth.AuthUserMapper;
 import app.vercel.meyssam.classroom.mapper.create.CreateUserMapper;
 import app.vercel.meyssam.classroom.repository.UserRepository;
+import app.vercel.meyssam.classroom.service.JwtService;
 import app.vercel.meyssam.classroom.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +23,28 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final HistoryLogServiceImpl historyLogService;
+    private final JwtService jwtService;
 
     private final CreateUserMapper createUserMapper;
+    private final AuthUserMapper authUserMapper;
 
     public UserServiceImpl(
             UserRepository userRepository,
             HistoryLogServiceImpl historyLogService,
-            CreateUserMapper createUserMapper
+            JwtService jwtService,
+            CreateUserMapper createUserMapper,
+            AuthUserMapper authUserMapper
     ) {
         this.userRepository = userRepository;
         this.historyLogService = historyLogService;
+        this.jwtService = jwtService;
         this.createUserMapper = createUserMapper;
+        this.authUserMapper = authUserMapper;
+    }
+
+    @Override
+    public User getUserById(long userId) {
+        return userRepository.findById(userId).orElse(null);
     }
 
     @Override
@@ -52,11 +67,17 @@ public class UserServiceImpl implements UserService {
 
         historyLogService.saveUserRegistrationInHistoryLog(savedUser.getId());
 
-        return ResponseEntity.status(HttpStatus.CREATED  ).body(createUserMapper.toDto(savedUser));
+        return ResponseEntity.status(HttpStatus.CREATED).body(createUserMapper.toDto(savedUser));
     }
 
     @Override
-    public User getUserById(long userId) {
-        return userRepository.findById(userId).orElse(null);
+    public ResponseEntity<AuthUserResponseDto> authenticate(
+            AuthUserRequestDto authUserRequestDto
+    ) {
+        User user = authUserMapper.toEntity(authUserRequestDto);
+
+        final var token = jwtService.generateToken(user.getUsername(), String.valueOf(user.getId()));
+
+        return ResponseEntity.status(HttpStatus.OK).body(new AuthUserResponseDto(token));
     }
 }
