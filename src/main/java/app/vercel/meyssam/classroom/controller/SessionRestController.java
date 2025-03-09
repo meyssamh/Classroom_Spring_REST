@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/session")
+@RequestMapping("/api/sessions")
 public class SessionRestController {
 
     private final SessionServiceImpl sessionService;
@@ -31,14 +31,14 @@ public class SessionRestController {
         return sessionService.getSession(sessionId);
     }
 
-    @GetMapping("/class/{classId}")
+    @GetMapping("/classes/{classId}")
     public ResponseEntity<List<GetSessionResponseDto>> getAllSessions(
             @PathVariable long classId
     ) {
         return sessionService.getAllSessions(classId);
     }
 
-    @PostMapping("/class/{classId}/{userId}")
+    @PostMapping("/classes/{classId}/{userId}")
     public ResponseEntity<CreateSessionResponseDto> saveSession(
             @PathVariable long classId,
             @PathVariable long userId,

@@ -31,7 +31,7 @@ public class ClassRestController {
         return classService.getClass(classId);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<List<GetClassResponseDto>> getAllClasses(
             @PathVariable long userId
     ) {
