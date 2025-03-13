@@ -5,7 +5,10 @@ import app.vercel.meyssam.classroom.dto.auth.AuthUserResponseDto;
 import app.vercel.meyssam.classroom.dto.create.CreateUserRequestDto;
 import app.vercel.meyssam.classroom.dto.create.CreateUserResponseDto;
 import app.vercel.meyssam.classroom.service.impl.UserServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,5 +38,21 @@ public class UserRestController {
             @RequestBody AuthUserRequestDto user
     ) {
         return userService.authenticate(user);
+    }
+
+    @PostMapping("/signout")
+    public ResponseEntity<String> signOut(
+            HttpServletRequest request
+    ) {
+        // Invalidate the session
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        // Clear authentication
+        SecurityContextHolder.clearContext();
+
+        return ResponseEntity.ok("Signed out successfully!");
     }
 }
